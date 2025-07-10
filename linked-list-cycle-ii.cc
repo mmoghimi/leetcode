@@ -8,17 +8,29 @@
  */
 class Solution {
 public:
-    ListNode *detectCycle(ListNode *head) {
-        set<ListNode*> s;
-
-        ListNode* node = head;
-        while(node) {
-            s.insert(node);
-            if(s.find(node->next) != s.end())
-                return node->next;
-            node = node->next;
-        }
-
+  ListNode *detectCycle(ListNode *head) {
+    if(!head)
+      return NULL;
+    if(!head->next)
+      return NULL;
+    if(!head->next->next)
+      return NULL;
+    
+    ListNode* fast = head->next->next;
+    ListNode* slow = head->next;
+    
+    while(fast != slow) {
+      if(!fast || !fast->next)
         return NULL;
+      fast = fast->next->next;
+      slow = slow->next;
     }
+    
+    fast = head;
+    while(fast != slow) {
+      fast = fast->next;
+      slow = slow->next;
+    }
+    return slow;
+  }
 };
